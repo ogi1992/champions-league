@@ -1,1 +1,1 @@
-# champions-league
+# Application for Champions league group system
