@@ -71,8 +71,10 @@ public class GroupServiceImpl implements GroupService {
 
                 groupRepository.save(group);
             } else {
-                group.setMatchday(gameTO.getMatchday());
-                groupRepository.save(group);
+                if (gameTO.getMatchday() > group.getMatchday()) {
+                    group.setMatchday(gameTO.getMatchday());
+                    groupRepository.save(group);
+                }
             }
             updateTeamStats(gameTO, group);
             saveGame(gameTO, group);
