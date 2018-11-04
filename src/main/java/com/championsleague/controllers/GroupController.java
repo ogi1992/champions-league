@@ -5,7 +5,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import to.GamesTO;
+import to.GameTO;
 import to.GroupTO;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class GroupController {
     }
 
     @PostMapping
-    public List<GroupTO> addResults(@RequestBody GamesTO results) {
+    public List<GroupTO> addResults(@RequestBody List<GameTO> results) {
         return groupService.addResults(results);
     }
 }

@@ -14,7 +14,7 @@ public class GameTO implements Serializable {
 
     private String leagueTitle;
 
-    private int matchDay;
+    private int matchday;
 
     private String group;
 

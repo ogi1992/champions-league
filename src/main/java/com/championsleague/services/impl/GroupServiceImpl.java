@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import to.GameTO;
-import to.GamesTO;
 import to.GroupTO;
 import to.TeamTO;
 
@@ -61,10 +60,8 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupTO> addResults(GamesTO results) {
-        List<GameTO> gameTOs = results.getGames();
-
-        for (GameTO gameTO : gameTOs) {
+    public List<GroupTO> addResults(List<GameTO> results) {
+        for (GameTO gameTO : results) {
             Group group = groupRepository.findByName(gameTO.getGroup());
             if (group == null) {
                 group = new Group();
@@ -74,7 +71,7 @@ public class GroupServiceImpl implements GroupService {
 
                 groupRepository.save(group);
             } else {
-                group.setMatchday(gameTO.getMatchDay());
+                group.setMatchday(gameTO.getMatchday());
                 groupRepository.save(group);
             }
             updateTeamStats(gameTO, group);
@@ -131,7 +128,7 @@ public class GroupServiceImpl implements GroupService {
     private void saveGame(GameTO gameTO, Group group) {
         GamePK gamePK = new GamePK(findTeamId(gameTO.getHomeTeam()), findTeamId(gameTO.getAwayTeam()));
         Game game = new Game(gamePK, group, gameTO.getScore(), gameTO.getKickoffAt(),
-                gameTO.getMatchDay(), gameTO.getLeagueTitle());
+                gameTO.getMatchday(), gameTO.getLeagueTitle());
 
         gameRepository.save(game);
     }
