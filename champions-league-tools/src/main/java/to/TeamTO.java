@@ -30,4 +30,16 @@ public class TeamTO implements Serializable {
     private int lose;
 
     private int draw;
+
+    public TeamTO(String team, int playedGames, int points, int goals, int goalsAgainst, int goalDifference, int win, int lose, int draw) {
+        this.team = team;
+        this.playedGames = playedGames;
+        this.points = points;
+        this.goals = goals;
+        this.goalsAgainst = goalsAgainst;
+        this.goalDifference = goalDifference;
+        this.win = win;
+        this.lose = lose;
+        this.draw = draw;
+    }
 }

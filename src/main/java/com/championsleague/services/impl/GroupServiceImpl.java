@@ -21,6 +21,7 @@ import to.TeamTO;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -48,11 +49,15 @@ public class GroupServiceImpl implements GroupService {
                 .thenComparing(TeamTO::getGoals)
                 .thenComparing(TeamTO::getGoalDifference);
 
-        return teams.stream()
-                .map(team -> new TeamTO(team.getRank(), team.getName(), team.getPlayedGames(), team.getPoints(), team.getGoals(),
+        List<TeamTO> teamTOS = teams.stream()
+                .map(team -> new TeamTO(team.getName(), team.getPlayedGames(), team.getPoints(), team.getGoals(),
                         team.getGoalsAgainst(), team.getGoalDifference(), team.getWin(), team.getLose(), team.getDraw()))
                 .sorted(comparator)
                 .collect(Collectors.toList());
+
+        IntStream.range(0, teamTOS.size())
+                .peek(i -> teamTOS.get(i).setRank(i++));
+        return teamTOS;
     }
 
     @Override
@@ -117,7 +122,6 @@ public class GroupServiceImpl implements GroupService {
             team.setDraw(team.getDraw() + 1);
             team.setPoints(team.getPoints() + Points.DRAW.getPoints());
         }
-
     }
 
     private Team findTeamByName(String teamName) {

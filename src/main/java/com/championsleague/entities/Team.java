@@ -24,8 +24,6 @@ public class Team {
     @NotNull
     private String name;
 
-    private int rank;
-
     private int playedGames;
 
     private int points;
