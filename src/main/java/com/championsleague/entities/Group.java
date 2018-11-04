@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "group")
+@Table(name = "`group`")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
