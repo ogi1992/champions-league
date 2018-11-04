@@ -1,1 +1,3 @@
 rootProject.name = 'champions-league'
+include 'champions-league-tools'
+
