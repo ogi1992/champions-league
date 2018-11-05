@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamTO implements Serializable {
+public class TeamTO implements Serializable, Comparable<TeamTO> {
 
     private int rank;
 
@@ -41,5 +41,17 @@ public class TeamTO implements Serializable {
         this.win = win;
         this.lose = lose;
         this.draw = draw;
+    }
+
+    @Override
+    public int compareTo(TeamTO o) {
+        int compare = Integer.compare(o.getPoints(), getPoints());
+        if (compare == 0) {
+            compare = Integer.compare(o.getGoals(), getGoals());
+            if (compare == 0) {
+                compare = Integer.compare(o.getGoalDifference(), getGoalDifference());
+            }
+        }
+        return compare;
     }
 }
