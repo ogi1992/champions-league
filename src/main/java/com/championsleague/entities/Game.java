@@ -8,6 +8,8 @@ import lombok.Setter;
 import com.championsleague.to.GameTO;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -25,6 +27,7 @@ public class Game {
     @JoinColumn(name = "group_id")
     private Group group;
 
+    @NotEmpty(message = "Score must not be null or empty")
     private String score;
 
     private Date kickoffAt;

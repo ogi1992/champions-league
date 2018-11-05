@@ -7,6 +7,8 @@ import com.championsleague.to.GroupTO;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,12 +27,12 @@ public class GroupController {
     }
 
     @PostMapping
-    public List<GroupTO> addResults(@RequestBody List<GameTO> results) throws GenericException {
-        return groupService.addResults(results);
+    public ResponseEntity<?> addResults(@RequestBody List<GameTO> results) throws GenericException {
+        return new ResponseEntity<>(groupService.addResults(results), HttpStatus.OK);
     }
 
     @PutMapping
-    public List<GroupTO> updateResults(@RequestBody List<GameTO> results) throws GenericException {
-        return groupService.updateResults(results);
+    public ResponseEntity<?> updateResults(@RequestBody List<GameTO> results) throws GenericException {
+        return new ResponseEntity<>(groupService.updateResults(results), HttpStatus.OK);
     }
 }

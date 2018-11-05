@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -26,6 +28,7 @@ public class Group {
     @OneToMany(mappedBy = "group")
     private List<Game> games;
 
+    @NotEmpty(message = "Name of group must not be null or empty")
     private String name;
 
     private String leagueTitle;

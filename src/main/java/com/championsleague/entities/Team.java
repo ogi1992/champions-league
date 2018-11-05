@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -24,7 +25,7 @@ public class Team {
     @JoinColumn(name = "group_id")
     private Group group;
 
-    @NotNull
+    @NotEmpty(message = "Name of team must not be null or empty")
     private String name;
 
     private int playedGames;
