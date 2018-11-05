@@ -17,7 +17,6 @@ import to.GameTO;
 import to.GroupTO;
 import to.TeamTO;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,9 +45,8 @@ public class GroupServiceImpl implements GroupService {
         List<TeamTO> teamTOS = teams.stream()
                 .map(team -> new TeamTO(team.getName(), team.getPlayedGames(), team.getPoints(), team.getGoals(),
                         team.getGoalsAgainst(), team.getGoalDifference(), team.getWin(), team.getLose(), team.getDraw()))
+                .sorted()
                 .collect(Collectors.toList());
-
-        Collections.sort(teamTOS);
 
         for (int i = 0; i < teamTOS.size(); i++) {
             teamTOS.get(i).setRank(i + 1);
