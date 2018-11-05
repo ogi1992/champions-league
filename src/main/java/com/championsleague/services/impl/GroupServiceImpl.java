@@ -44,9 +44,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     private List<TeamTO> convertToTeamTO(List<Team> teams) {
-        Comparator<TeamTO> comparator = Comparator.comparing(TeamTO::getPoints)
-                .thenComparing(TeamTO::getGoals)
-                .thenComparing(TeamTO::getGoalDifference);
+        Comparator<TeamTO> comparator = Comparator.comparing(TeamTO::getPoints).reversed()
+                .thenComparing(TeamTO::getGoals).reversed()
+                .thenComparing(TeamTO::getGoalDifference).reversed();
 
         List<TeamTO> teamTOS = teams.stream()
                 .map(team -> new TeamTO(team.getName(), team.getPlayedGames(), team.getPoints(), team.getGoals(),
@@ -54,9 +54,8 @@ public class GroupServiceImpl implements GroupService {
                 .sorted(comparator)
                 .collect(Collectors.toList());
 
-        IntStream.range(0, teamTOS.size())
-                .peek(i -> teamTOS.get(i).setRank(i++));
         return teamTOS;
+        // ADD RANKS
     }
 
     @Override

@@ -1,15 +1,17 @@
 package com.championsleague.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "team")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Team {
@@ -19,6 +21,7 @@ public class Team {
     private Integer id;
 
     @ManyToOne
+    @JoinColumn(name = "group_id")
     private Group group;
 
     @NotNull
