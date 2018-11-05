@@ -1,12 +1,12 @@
 package com.championsleague.controllers;
 
 import com.championsleague.services.GroupService;
+import com.championsleague.to.GameTO;
+import com.championsleague.to.GroupTO;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import to.GameTO;
-import to.GroupTO;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.championsleague.services;
 
-import to.GameTO;
-import to.GroupTO;
+import com.championsleague.to.GameTO;
+import com.championsleague.to.GroupTO;
 
 import java.util.List;
 

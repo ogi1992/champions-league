@@ -1,4 +1,4 @@
-package enums;
+package com.championsleague.enums;
 
 public enum Points {
     WIN(3),

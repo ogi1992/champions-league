@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.championsleague.to.GameTO;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -31,4 +32,14 @@ public class Game {
     private int matchday;
 
     private String leagueTitle;
+
+    public Game(GamePK id, Group group, GameTO gameTO) {
+        this.id = id;
+        this.group = group;
+        this.score = gameTO.getScore();
+        this.kickoffAt = gameTO.getKickoffAt();
+        this.matchday = gameTO.getMatchday();
+        this.leagueTitle = gameTO.getLeagueTitle();
+    }
+
 }

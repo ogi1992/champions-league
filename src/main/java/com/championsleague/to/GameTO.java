@@ -1,4 +1,4 @@
-package to;
+package com.championsleague.to;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,5 +1,6 @@
-package to;
+package com.championsleague.to;
 
+import com.championsleague.entities.Group;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +20,11 @@ public class GroupTO implements Serializable {
     private String group;
 
     private List<TeamTO> standing;
+
+    public GroupTO(Group group, List<TeamTO> teams) {
+        this.leagueTitle = group.getLeagueTitle();
+        this.matchday = group.getMatchday();
+        this.group = group.getName();
+        this.standing = teams;
+    }
 }

@@ -4,18 +4,18 @@ import com.championsleague.entities.Game;
 import com.championsleague.entities.Group;
 import com.championsleague.entities.Team;
 import com.championsleague.entities.pk.GamePK;
+import com.championsleague.enums.Points;
 import com.championsleague.repositories.GameRepository;
 import com.championsleague.repositories.GroupRepository;
 import com.championsleague.repositories.TeamRepository;
 import com.championsleague.services.GroupService;
-import enums.Points;
+import com.championsleague.to.GameTO;
+import com.championsleague.to.GroupTO;
+import com.championsleague.to.TeamTO;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import to.GameTO;
-import to.GroupTO;
-import to.TeamTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,14 +37,13 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupTO> getGroupInfo() {
         List<Group> groups = groupRepository.findAll();
         return groups.stream()
-                .map(group -> new GroupTO(group.getLeagueTitle(), group.getMatchday(), group.getName(), convertToTeamTO(teamRepository.findByGroup_Id(group.getId()))))
+                .map(group -> new GroupTO(group, convertToTeamTO(teamRepository.findByGroup_Id(group.getId()))))
                 .collect(Collectors.toList());
     }
 
     private List<TeamTO> convertToTeamTO(List<Team> teams) {
         List<TeamTO> teamTOS = teams.stream()
-                .map(team -> new TeamTO(team.getName(), team.getPlayedGames(), team.getPoints(), team.getGoals(),
-                        team.getGoalsAgainst(), team.getGoalDifference(), team.getWin(), team.getLose(), team.getDraw()))
+                .map(TeamTO::new)
                 .sorted()
                 .collect(Collectors.toList());
 
@@ -125,8 +124,7 @@ public class GroupServiceImpl implements GroupService {
 
     private void saveGame(GameTO gameTO, Group group) {
         GamePK gamePK = new GamePK(findTeamId(gameTO.getHomeTeam()), findTeamId(gameTO.getAwayTeam()));
-        Game game = new Game(gamePK, group, gameTO.getScore(), gameTO.getKickoffAt(),
-                gameTO.getMatchday(), gameTO.getLeagueTitle());
+        Game game = new Game(gamePK, group, gameTO);
 
         gameRepository.save(game);
     }

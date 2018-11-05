@@ -1,5 +1,6 @@
-package to;
+package com.championsleague.to;
 
+import com.championsleague.entities.Team;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,16 +32,16 @@ public class TeamTO implements Serializable, Comparable<TeamTO> {
 
     private int draw;
 
-    public TeamTO(String team, int playedGames, int points, int goals, int goalsAgainst, int goalDifference, int win, int lose, int draw) {
-        this.team = team;
-        this.playedGames = playedGames;
-        this.points = points;
-        this.goals = goals;
-        this.goalsAgainst = goalsAgainst;
-        this.goalDifference = goalDifference;
-        this.win = win;
-        this.lose = lose;
-        this.draw = draw;
+    public TeamTO(Team team) {
+        this.team = team.getName();
+        this.playedGames = team.getPlayedGames();
+        this.points = team.getPoints();
+        this.goals = team.getGoals();
+        this.goalsAgainst = team.getGoalsAgainst();
+        this.goalDifference = team.getGoalDifference();
+        this.win = team.getWin();
+        this.lose = team.getLose();
+        this.draw = team.getDraw();
     }
 
     @Override
