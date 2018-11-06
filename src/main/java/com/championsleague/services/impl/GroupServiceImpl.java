@@ -17,6 +17,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -95,12 +96,12 @@ public class GroupServiceImpl implements GroupService {
         }
     }
 
-    private void updateTeamStats(GameTO gameTO, String oldScore) {
-        int homeGoals = Integer.parseInt(splitScore(gameTO.getScore())[0]);
-        int awayGoals = Integer.parseInt(splitScore(gameTO.getScore())[1]);
+    private void updateTeamStats(GameTO gameTO, String oldScore) throws GenericException {
+        int homeGoals = splitScore(gameTO.getScore(), 0);
+        int awayGoals = splitScore(gameTO.getScore(), 1);
 
-        int oldHomeGoals = Integer.parseInt(splitScore(oldScore)[0]);
-        int oldAwayGoals = Integer.parseInt(splitScore(oldScore)[1]);
+        int oldHomeGoals = splitScore(oldScore, 0);
+        int oldAwayGoals = splitScore(oldScore, 1);
 
         Team homeTeam = findTeamByName(gameTO.getHomeTeam());
         Team awayTeam = findTeamByName(gameTO.getAwayTeam());
@@ -193,9 +194,9 @@ public class GroupServiceImpl implements GroupService {
         return group;
     }
 
-    private void saveTeamStats(GameTO gameTO, Group group) {
-        int homeGoals = Integer.parseInt(gameTO.getScore().split(":")[0]);
-        int awayGoals = Integer.parseInt(gameTO.getScore().split(":")[1]);
+    private void saveTeamStats(GameTO gameTO, Group group) throws GenericException {
+        int homeGoals = splitScore(gameTO.getScore(), 0);
+        int awayGoals = splitScore(gameTO.getScore(), 1);
 
         Team homeTeam = findTeamByName(gameTO.getHomeTeam());
         Team awayTeam = findTeamByName(gameTO.getAwayTeam());
@@ -264,7 +265,14 @@ public class GroupServiceImpl implements GroupService {
         }
     }
 
-    private String[] splitScore(String score) {
-        return score.split(":");
+    private int splitScore(String score, int index) throws GenericException {
+        if (StringUtils.isEmpty(score)) {
+            throw new GenericException("Score field must not be empty or null");
+        }
+        try {
+            return Integer.parseInt(score.split(":")[index]);
+        } catch (NumberFormatException e) {
+            throw new GenericException(e.getMessage());
+        }
     }
 }

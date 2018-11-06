@@ -28,7 +28,7 @@ public class Game {
     private Group group;
 
     @NotEmpty(message = "Score must not be null or empty")
-    @Pattern(regexp = "(0:|[1-9][0-9]*:)(0$|[1-9][0-9]*$)", message = "Please insert correct score")
+    @Pattern(regexp = "[0-9]+:[0-9]+", message = "Please insert correct score")
     private String score;
 
     private Date kickoffAt;
