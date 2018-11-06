@@ -164,19 +164,25 @@ public class GroupServiceImpl implements GroupService {
     private void changeGameOutcome(Team team, GameOutcome subtractOutcome, GameOutcome addOutcome) {
         switch (subtractOutcome) {
             case WIN:
-                team.setWin(team.getWin() - 1); break;
+                team.setWin(team.getWin() - 1);
+                break;
             case DRAW:
-                team.setDraw(team.getDraw() - 1); break;
+                team.setDraw(team.getDraw() - 1);
+                break;
             case LOSE:
-                team.setLose(team.getLose() - 1); break;
+                team.setLose(team.getLose() - 1);
+                break;
         }
         switch (addOutcome) {
             case WIN:
-                team.setWin(team.getWin() + 1); break;
+                team.setWin(team.getWin() + 1);
+                break;
             case DRAW:
-                team.setDraw(team.getDraw() + 1); break;
+                team.setDraw(team.getDraw() + 1);
+                break;
             case LOSE:
-                team.setLose(team.getLose() + 1); break;
+                team.setLose(team.getLose() + 1);
+                break;
         }
     }
 
@@ -203,6 +209,11 @@ public class GroupServiceImpl implements GroupService {
     }
 
     private void saveTeamStats(GameTO gameTO, Group group) throws GenericException {
+        GamePK gamePK = new GamePK(findTeamId(gameTO.getHomeTeam()), findTeamId(gameTO.getAwayTeam()));
+        Optional<Game> gameOptional = gameRepository.findById(gamePK);
+        if (gameOptional.isPresent()) {
+            throw new GenericException("Game between: " + gameTO.getHomeTeam() + " and " + gameTO.getAwayTeam() + " already exists. Can't add new one");
+        }
         int homeGoals = splitScore(gameTO.getScore(), 0);
         int awayGoals = splitScore(gameTO.getScore(), 1);
 
@@ -259,18 +270,17 @@ public class GroupServiceImpl implements GroupService {
 
     private void saveGame(GameTO gameTO, Group group) throws GenericException {
         GamePK gamePK = new GamePK(findTeamId(gameTO.getHomeTeam()), findTeamId(gameTO.getAwayTeam()));
+        Optional<Game> gameOptional = gameRepository.findById(gamePK);
+        if (gameOptional.isPresent()) {
+            throw new GenericException("There is already a game featuring: " + gameTO.getHomeTeam() + " and " + gameTO.getAwayTeam());
+        }
         Game game = new Game(gamePK, group, gameTO);
 
         gameRepository.save(game);
     }
 
-    private Integer findTeamId(String teamName) throws GenericException {
-        Integer teamId = teamRepository.findIdByName(teamName);
-        if (teamId == null) {
-            throw new GenericException(teamName + " doesn't exist in database. Can't add or update game.");
-        } else {
-            return teamId;
-        }
+    private Integer findTeamId(String teamName) {
+        return teamRepository.findIdByName(teamName);
     }
 
     private int splitScore(String score, int index) throws GenericException {
