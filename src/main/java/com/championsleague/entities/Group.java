@@ -7,8 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "`group`")
@@ -23,10 +23,10 @@ public class Group {
     private Integer id;
 
     @OneToMany(mappedBy = "group")
-    private List<Team> teams;
+    private Set<Team> teams;
 
     @OneToMany(mappedBy = "group")
-    private List<Game> games;
+    private Set<Game> games;
 
     @NotEmpty(message = "Name of group must not be null or empty")
     private String name;

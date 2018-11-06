@@ -15,4 +15,7 @@ public interface TeamRepository extends CrudRepository<Team, Integer> {
     Integer findIdByName(@Param("name") String name);
 
     List<Team> findByGroup_Id(Integer id);
+
+    @Query("SELECT t.name FROM Team t WHERE t.id = :id")
+    String findNameById(Integer id);
 }

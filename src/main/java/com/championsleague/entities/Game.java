@@ -1,15 +1,15 @@
 package com.championsleague.entities;
 
 import com.championsleague.entities.pk.GamePK;
+import com.championsleague.to.GameTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.championsleague.to.GameTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 @Entity
@@ -28,6 +28,7 @@ public class Game {
     private Group group;
 
     @NotEmpty(message = "Score must not be null or empty")
+    @Pattern(regexp = "(0:|[1-9][0-9]*:)(0$|[1-9][0-9]*$)", message = "Please insert correct score")
     private String score;
 
     private Date kickoffAt;

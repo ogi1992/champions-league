@@ -41,7 +41,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
         return handleExceptionInternal(
-                ex, apiError, headers, apiError.getStatus(), request);
+                ex, apiError, headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler({ConstraintViolationException.class})
@@ -55,7 +55,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
         return new ResponseEntity<>(
-                apiError, new HttpHeaders(), apiError.getStatus());
+                apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
@@ -66,7 +66,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), Collections.singletonList(error));
         return new ResponseEntity<>(
-                apiError, new HttpHeaders(), apiError.getStatus());
+                apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         ApiError apiError = new ApiError(HttpStatus.METHOD_NOT_ALLOWED,
                 ex.getLocalizedMessage(), Collections.singletonList(builder.toString()));
         return new ResponseEntity<>(
-                apiError, new HttpHeaders(), apiError.getStatus());
+                apiError, new HttpHeaders(), HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler({Exception.class})
@@ -91,7 +91,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         ApiError apiError = new ApiError(
                 HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage());
         return new ResponseEntity<>(
-                apiError, new HttpHeaders(), apiError.getStatus());
+                apiError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({GenericException.class})
@@ -99,6 +99,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         ApiError apiError = new ApiError(
                 HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage());
         return new ResponseEntity<>(
-                apiError, new HttpHeaders(), apiError.getStatus());
+                apiError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
