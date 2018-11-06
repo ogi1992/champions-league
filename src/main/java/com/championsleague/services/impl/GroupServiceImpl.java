@@ -4,6 +4,7 @@ import com.championsleague.entities.Game;
 import com.championsleague.entities.Group;
 import com.championsleague.entities.Team;
 import com.championsleague.entities.pk.GamePK;
+import com.championsleague.enums.GameOutcome;
 import com.championsleague.enums.Points;
 import com.championsleague.exceptions.GenericException;
 import com.championsleague.repositories.GameRepository;
@@ -117,59 +118,66 @@ public class GroupServiceImpl implements GroupService {
                 changePoints(homeTeam, Points.WIN.getPoints(), Points.LOSE.getPoints());
                 changePoints(awayTeam, Points.LOSE.getPoints(), Points.WIN.getPoints());
 
-                homeTeam.setWin(homeTeam.getWin() - 1);
-                homeTeam.setLose(homeTeam.getLose() + 1);
-                awayTeam.setLose(awayTeam.getLose() - 1);
-                awayTeam.setWin(awayTeam.getWin() + 1);
+                changeGameOutcome(homeTeam, GameOutcome.WIN, GameOutcome.LOSE);
+                changeGameOutcome(awayTeam, GameOutcome.LOSE, GameOutcome.WIN);
             } else if (homeGoals == awayGoals) {
                 changePoints(homeTeam, Points.WIN.getPoints(), Points.DRAW.getPoints());
                 changePoints(awayTeam, Points.LOSE.getPoints(), Points.DRAW.getPoints());
 
-                homeTeam.setWin(homeTeam.getWin() - 1);
-                homeTeam.setDraw(homeTeam.getDraw() + 1);
-                awayTeam.setLose(awayTeam.getLose() - 1);
-                awayTeam.setDraw(awayTeam.getDraw() + 1);
+                changeGameOutcome(homeTeam, GameOutcome.WIN, GameOutcome.DRAW);
+                changeGameOutcome(awayTeam, GameOutcome.LOSE, GameOutcome.DRAW);
             }
         } else if (oldHomeGoals == oldAwayGoals) {
             if (homeGoals < awayGoals) {
                 changePoints(homeTeam, Points.DRAW.getPoints(), Points.LOSE.getPoints());
                 changePoints(awayTeam, Points.DRAW.getPoints(), Points.WIN.getPoints());
 
-                homeTeam.setDraw(homeTeam.getDraw() - 1);
-                homeTeam.setLose(homeTeam.getLose() + 1);
-                awayTeam.setDraw(awayTeam.getDraw() - 1);
-                awayTeam.setWin(awayTeam.getWin() + 1);
+                changeGameOutcome(homeTeam, GameOutcome.DRAW, GameOutcome.LOSE);
+                changeGameOutcome(awayTeam, GameOutcome.DRAW, GameOutcome.WIN);
             } else if (homeGoals > awayGoals) {
                 changePoints(homeTeam, Points.DRAW.getPoints(), Points.WIN.getPoints());
                 changePoints(awayTeam, Points.DRAW.getPoints(), Points.LOSE.getPoints());
 
-                homeTeam.setDraw(homeTeam.getDraw() - 1);
-                homeTeam.setWin(homeTeam.getWin() + 1);
-                awayTeam.setDraw(awayTeam.getDraw() - 1);
-                awayTeam.setLose(awayTeam.getLose() + 1);
+                changeGameOutcome(homeTeam, GameOutcome.DRAW, GameOutcome.WIN);
+                changeGameOutcome(awayTeam, GameOutcome.DRAW, GameOutcome.LOSE);
             }
         } else {
             if (homeGoals > awayGoals) {
                 changePoints(homeTeam, Points.LOSE.getPoints(), Points.WIN.getPoints());
                 changePoints(awayTeam, Points.WIN.getPoints(), Points.LOSE.getPoints());
 
-                homeTeam.setLose(homeTeam.getLose() - 1);
-                homeTeam.setWin(homeTeam.getWin() + 1);
-                awayTeam.setWin(awayTeam.getWin() - 1);
-                awayTeam.setLose(awayTeam.getLose() + 1);
+                changeGameOutcome(homeTeam, GameOutcome.LOSE, GameOutcome.WIN);
+                changeGameOutcome(awayTeam, GameOutcome.WIN, GameOutcome.LOSE);
             } else if (homeGoals == awayGoals) {
                 changePoints(homeTeam, Points.LOSE.getPoints(), Points.DRAW.getPoints());
                 changePoints(awayTeam, Points.WIN.getPoints(), Points.DRAW.getPoints());
 
-                homeTeam.setLose(homeTeam.getLose() - 1);
-                homeTeam.setDraw(homeTeam.getDraw() + 1);
-                awayTeam.setWin(awayTeam.getWin() - 1);
-                awayTeam.setDraw(awayTeam.getDraw() + 1);
+                changeGameOutcome(homeTeam, GameOutcome.LOSE, GameOutcome.DRAW);
+                changeGameOutcome(awayTeam, GameOutcome.WIN, GameOutcome.DRAW);
             }
         }
 
         teamRepository.save(homeTeam);
         teamRepository.save(awayTeam);
+    }
+
+    private void changeGameOutcome(Team team, GameOutcome subtractOutcome, GameOutcome addOutcome) {
+        switch (subtractOutcome) {
+            case WIN:
+                team.setWin(team.getWin() - 1); break;
+            case DRAW:
+                team.setDraw(team.getDraw() - 1); break;
+            case LOSE:
+                team.setLose(team.getLose() - 1); break;
+        }
+        switch (addOutcome) {
+            case WIN:
+                team.setWin(team.getWin() + 1); break;
+            case DRAW:
+                team.setDraw(team.getDraw() + 1); break;
+            case LOSE:
+                team.setLose(team.getLose() + 1); break;
+        }
     }
 
     private void changePoints(Team team, int oldPoints, int newPoints) {
