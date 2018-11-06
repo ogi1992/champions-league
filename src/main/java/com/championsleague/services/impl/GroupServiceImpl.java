@@ -115,45 +115,27 @@ public class GroupServiceImpl implements GroupService {
 
         if (oldHomeGoals > oldAwayGoals) {
             if (homeGoals < awayGoals) {
-                changePoints(homeTeam, Points.WIN.getPoints(), Points.LOSE.getPoints());
-                changePoints(awayTeam, Points.LOSE.getPoints(), Points.WIN.getPoints());
-
-                changeGameOutcome(homeTeam, GameOutcome.WIN, GameOutcome.LOSE);
-                changeGameOutcome(awayTeam, GameOutcome.LOSE, GameOutcome.WIN);
+                changePointsAndOutcomes(homeTeam, GameOutcome.WIN, GameOutcome.LOSE);
+                changePointsAndOutcomes(awayTeam, GameOutcome.LOSE, GameOutcome.WIN);
             } else if (homeGoals == awayGoals) {
-                changePoints(homeTeam, Points.WIN.getPoints(), Points.DRAW.getPoints());
-                changePoints(awayTeam, Points.LOSE.getPoints(), Points.DRAW.getPoints());
-
-                changeGameOutcome(homeTeam, GameOutcome.WIN, GameOutcome.DRAW);
-                changeGameOutcome(awayTeam, GameOutcome.LOSE, GameOutcome.DRAW);
+                changePointsAndOutcomes(homeTeam, GameOutcome.WIN, GameOutcome.DRAW);
+                changePointsAndOutcomes(awayTeam, GameOutcome.LOSE, GameOutcome.DRAW);
             }
         } else if (oldHomeGoals == oldAwayGoals) {
             if (homeGoals < awayGoals) {
-                changePoints(homeTeam, Points.DRAW.getPoints(), Points.LOSE.getPoints());
-                changePoints(awayTeam, Points.DRAW.getPoints(), Points.WIN.getPoints());
-
-                changeGameOutcome(homeTeam, GameOutcome.DRAW, GameOutcome.LOSE);
-                changeGameOutcome(awayTeam, GameOutcome.DRAW, GameOutcome.WIN);
+                changePointsAndOutcomes(homeTeam, GameOutcome.DRAW, GameOutcome.LOSE);
+                changePointsAndOutcomes(awayTeam, GameOutcome.DRAW, GameOutcome.WIN);
             } else if (homeGoals > awayGoals) {
-                changePoints(homeTeam, Points.DRAW.getPoints(), Points.WIN.getPoints());
-                changePoints(awayTeam, Points.DRAW.getPoints(), Points.LOSE.getPoints());
-
-                changeGameOutcome(homeTeam, GameOutcome.DRAW, GameOutcome.WIN);
-                changeGameOutcome(awayTeam, GameOutcome.DRAW, GameOutcome.LOSE);
+                changePointsAndOutcomes(homeTeam, GameOutcome.DRAW, GameOutcome.WIN);
+                changePointsAndOutcomes(awayTeam, GameOutcome.DRAW, GameOutcome.LOSE);
             }
         } else {
             if (homeGoals > awayGoals) {
-                changePoints(homeTeam, Points.LOSE.getPoints(), Points.WIN.getPoints());
-                changePoints(awayTeam, Points.WIN.getPoints(), Points.LOSE.getPoints());
-
-                changeGameOutcome(homeTeam, GameOutcome.LOSE, GameOutcome.WIN);
-                changeGameOutcome(awayTeam, GameOutcome.WIN, GameOutcome.LOSE);
+                changePointsAndOutcomes(homeTeam, GameOutcome.LOSE, GameOutcome.WIN);
+                changePointsAndOutcomes(awayTeam, GameOutcome.WIN, GameOutcome.LOSE);
             } else if (homeGoals == awayGoals) {
-                changePoints(homeTeam, Points.LOSE.getPoints(), Points.DRAW.getPoints());
-                changePoints(awayTeam, Points.WIN.getPoints(), Points.DRAW.getPoints());
-
-                changeGameOutcome(homeTeam, GameOutcome.LOSE, GameOutcome.DRAW);
-                changeGameOutcome(awayTeam, GameOutcome.WIN, GameOutcome.DRAW);
+                changePointsAndOutcomes(homeTeam, GameOutcome.LOSE, GameOutcome.DRAW);
+                changePointsAndOutcomes(awayTeam, GameOutcome.WIN, GameOutcome.DRAW);
             }
         }
 
@@ -161,33 +143,35 @@ public class GroupServiceImpl implements GroupService {
         teamRepository.save(awayTeam);
     }
 
-    private void changeGameOutcome(Team team, GameOutcome subtractOutcome, GameOutcome addOutcome) {
-        switch (subtractOutcome) {
+    private void changePointsAndOutcomes(Team team, GameOutcome oldOutcome, GameOutcome newOutcome) {
+        switch (oldOutcome) {
             case WIN:
                 team.setWin(team.getWin() - 1);
+                team.setPoints(team.getPoints() - Points.WIN.getPoints());
                 break;
             case DRAW:
                 team.setDraw(team.getDraw() - 1);
+                team.setPoints(team.getPoints() - Points.DRAW.getPoints());
                 break;
             case LOSE:
                 team.setLose(team.getLose() - 1);
+                team.setPoints(team.getPoints() - Points.LOSE.getPoints());
                 break;
         }
-        switch (addOutcome) {
+        switch (newOutcome) {
             case WIN:
                 team.setWin(team.getWin() + 1);
+                team.setPoints(team.getPoints() + Points.WIN.getPoints());
                 break;
             case DRAW:
                 team.setDraw(team.getDraw() + 1);
+                team.setPoints(team.getPoints() + Points.DRAW.getPoints());
                 break;
             case LOSE:
                 team.setLose(team.getLose() + 1);
+                team.setPoints(team.getPoints() + Points.LOSE.getPoints());
                 break;
         }
-    }
-
-    private void changePoints(Team team, int oldPoints, int newPoints) {
-        team.setPoints(team.getPoints() - oldPoints + newPoints);
     }
 
     private Group checkGroup(GameTO gameTO) {
