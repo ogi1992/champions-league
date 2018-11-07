@@ -259,7 +259,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     private Team findTeamByName(String teamName) {
-        return teamRepository.findByName(teamName).orElseThrow(() -> new GenericException("There is no team with name: " + teamName));
+        return teamRepository.findByName(teamName).orElse(null);
     }
 
     private void saveGame(GameTO gameTO, Group group) {
