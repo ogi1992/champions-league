@@ -2,10 +2,6 @@ package com.championsleague.entities;
 
 import com.championsleague.entities.pk.GamePK;
 import com.championsleague.to.GameTO;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -14,10 +10,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "game")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Game {
 
     @EmbeddedId
@@ -37,6 +29,10 @@ public class Game {
 
     private String leagueTitle;
 
+    public Game() {
+
+    }
+
     public Game(GamePK id, Group group, GameTO gameTO) {
         this.id = id;
         this.group = group;
@@ -46,4 +42,51 @@ public class Game {
         this.leagueTitle = gameTO.getLeagueTitle();
     }
 
+    public GamePK getId() {
+        return id;
+    }
+
+    public void setId(GamePK id) {
+        this.id = id;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    public Date getKickoffAt() {
+        return kickoffAt;
+    }
+
+    public void setKickoffAt(Date kickoffAt) {
+        this.kickoffAt = kickoffAt;
+    }
+
+    public int getMatchday() {
+        return matchday;
+    }
+
+    public void setMatchday(int matchday) {
+        this.matchday = matchday;
+    }
+
+    public String getLeagueTitle() {
+        return leagueTitle;
+    }
+
+    public void setLeagueTitle(String leagueTitle) {
+        this.leagueTitle = leagueTitle;
+    }
 }

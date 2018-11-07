@@ -14,8 +14,6 @@ import com.championsleague.services.GroupService;
 import com.championsleague.to.GameTO;
 import com.championsleague.to.GroupTO;
 import com.championsleague.to.TeamTO;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -25,17 +23,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GroupServiceImpl implements GroupService {
 
-    private final @NonNull
-    GroupRepository groupRepository;
+    @Autowired
+    private GroupRepository groupRepository;
 
-    private final @NonNull
-    GameRepository gameRepository;
+    @Autowired
+    private GameRepository gameRepository;
 
-    private final @NonNull
-    TeamRepository teamRepository;
+    @Autowired
+    private TeamRepository teamRepository;
 
     @Override
     public List<GroupTO> getGroupInfo() {

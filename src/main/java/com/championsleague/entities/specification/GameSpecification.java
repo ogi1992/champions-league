@@ -2,7 +2,6 @@ package com.championsleague.entities.specification;
 
 import com.championsleague.entities.Game;
 import com.championsleague.entities.Group;
-import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -12,10 +11,13 @@ import javax.persistence.criteria.Root;
 import java.util.Date;
 import java.util.Map;
 
-@AllArgsConstructor
 public class GameSpecification implements Specification<Game> {
 
     private SearchCriteria criteria;
+
+    public GameSpecification(SearchCriteria searchCriteria) {
+        this.criteria = searchCriteria;
+    }
 
     @Override
     public Predicate toPredicate(Root<Game> root, CriteriaQuery<?> query, CriteriaBuilder builder) {

@@ -9,8 +9,6 @@ import com.championsleague.repositories.TeamRepository;
 import com.championsleague.services.GameService;
 import com.championsleague.to.FilterTO;
 import com.championsleague.to.GameTO;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -23,17 +21,16 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GameServiceImpl implements GameService {
 
-    private final @NonNull
-    GameRepository gameRepository;
+    @Autowired
+    private GameRepository gameRepository;
 
-    private final @NonNull
-    TeamRepository teamRepository;
+    @Autowired
+    private TeamRepository teamRepository;
 
-    private final @NonNull
-    GroupRepository groupRepository;
+    @Autowired
+    private GroupRepository groupRepository;
 
     @Override
     public List<GameTO> filterResults(FilterTO filters) throws GenericException {

@@ -1,16 +1,10 @@
 package com.championsleague.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiError {
 
@@ -21,5 +15,11 @@ public class ApiError {
     public ApiError(HttpStatus status, String message) {
         this.status = status;
         this.message = message;
+    }
+
+    public ApiError(HttpStatus status, String message, List<String> errors) {
+        this.status = status;
+        this.message = message;
+        this.errors = errors;
     }
 }

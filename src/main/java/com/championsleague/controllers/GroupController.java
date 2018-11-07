@@ -4,8 +4,6 @@ import com.championsleague.exceptions.GenericException;
 import com.championsleague.services.GroupService;
 import com.championsleague.to.GameTO;
 import com.championsleague.to.GroupTO;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/groups")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GroupController {
 
-    private final @NonNull
-    GroupService groupService;
+    @Autowired
+    private GroupService groupService;
 
     @GetMapping
     public List<GroupTO> getGroups() {
