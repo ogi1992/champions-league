@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/games")
 public class GameController {
 
-    @Autowired
     private GameService gameService;
+
+    @Autowired
+    public GameController(GameService gameService) {
+        this.gameService = gameService;
+    }
 
     @PostMapping(value = "/filter")
     public ResponseEntity<?> filterResults(@RequestBody FilterTO filters) throws GenericException {

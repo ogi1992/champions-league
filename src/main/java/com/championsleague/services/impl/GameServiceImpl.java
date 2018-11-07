@@ -23,14 +23,18 @@ import java.util.stream.Collectors;
 @Service
 public class GameServiceImpl implements GameService {
 
-    @Autowired
     private GameRepository gameRepository;
 
-    @Autowired
     private TeamRepository teamRepository;
 
-    @Autowired
     private GroupRepository groupRepository;
+
+    @Autowired
+    public GameServiceImpl(GameRepository gameRepository, TeamRepository teamRepository, GroupRepository groupRepository) {
+        this.gameRepository = gameRepository;
+        this.teamRepository = teamRepository;
+        this.groupRepository = groupRepository;
+    }
 
     @Override
     public List<GameTO> filterResults(FilterTO filters) throws GenericException {

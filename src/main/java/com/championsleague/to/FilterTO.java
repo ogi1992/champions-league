@@ -5,13 +5,13 @@ import java.util.Date;
 
 public class FilterTO implements Serializable {
 
-    Date from;
+    private Date from;
 
-    Date to;
+    private Date to;
 
-    String group;
+    private String group;
 
-    String team;
+    private String team;
 
     public FilterTO() {
 

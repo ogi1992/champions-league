@@ -2,6 +2,9 @@ package com.championsleague.to;
 
 import com.championsleague.entities.Game;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,14 +14,20 @@ public class GameTO implements Serializable {
 
     private int matchday;
 
+    @NotEmpty(message = "Group must not be null or empty")
+    @Size(min = 1, max = 1)
     private String group;
 
+    @NotEmpty(message = "Home team must not be null or empty")
     private String homeTeam;
 
+    @NotEmpty(message = "Away team must not be null or empty")
     private String awayTeam;
 
     private Date kickoffAt;
 
+    @NotEmpty(message = "Score must not be null or empty")
+    @Pattern(regexp = "[0-9]+:[0-9]+", message = "Please insert correct score")
     private String score;
 
     public GameTO(Game game, String homeTeam, String awayTeam) {

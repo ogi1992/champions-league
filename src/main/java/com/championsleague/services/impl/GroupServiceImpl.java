@@ -25,14 +25,18 @@ import java.util.stream.Collectors;
 @Service
 public class GroupServiceImpl implements GroupService {
 
-    @Autowired
     private GroupRepository groupRepository;
 
-    @Autowired
     private GameRepository gameRepository;
 
-    @Autowired
     private TeamRepository teamRepository;
+
+    @Autowired
+    public GroupServiceImpl(GroupRepository groupRepository, GameRepository gameRepository, TeamRepository teamRepository) {
+        this.groupRepository = groupRepository;
+        this.gameRepository = gameRepository;
+        this.teamRepository = teamRepository;
+    }
 
     @Override
     public List<GroupTO> getGroupInfo() {
