@@ -64,7 +64,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupTO> addResults(List<GameTO> results) throws GenericException {
+    public List<GroupTO> addResults(List<GameTO> results) {
         for (GameTO gameTO : results) {
             Group group = checkGroup(gameTO);
             try {
@@ -80,7 +80,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupTO> updateResults(List<GameTO> results) throws GenericException {
+    public List<GroupTO> updateResults(List<GameTO> results) {
         for (GameTO gameTO : results) {
             Group group = groupRepository.findByName(gameTO.getGroup());
             if (group == null) {
@@ -92,7 +92,7 @@ public class GroupServiceImpl implements GroupService {
         return getGroupInfo();
     }
 
-    private void updateGameInfo(GameTO gameTO) throws GenericException {
+    private void updateGameInfo(GameTO gameTO) {
         GamePK gamePK = new GamePK(findTeamId(gameTO.getHomeTeam()), findTeamId(gameTO.getAwayTeam()));
         Optional<Game> gameOptional = gameRepository.findById(gamePK);
         if (!gameOptional.isPresent()) {
@@ -107,7 +107,7 @@ public class GroupServiceImpl implements GroupService {
         }
     }
 
-    private void updateTeamStats(GameTO gameTO, String oldScore) throws GenericException {
+    private void updateTeamStats(GameTO gameTO, String oldScore) {
         int homeGoals = splitScore(gameTO.getScore(), 0);
         int awayGoals = splitScore(gameTO.getScore(), 1);
 
@@ -202,7 +202,7 @@ public class GroupServiceImpl implements GroupService {
         return group;
     }
 
-    private void saveTeamStats(GameTO gameTO, Group group) throws GenericException {
+    private void saveTeamStats(GameTO gameTO, Group group) {
         GamePK gamePK = new GamePK(findTeamId(gameTO.getHomeTeam()), findTeamId(gameTO.getAwayTeam()));
         Optional<Game> gameOptional = gameRepository.findById(gamePK);
         if (gameOptional.isPresent()) {
@@ -258,11 +258,11 @@ public class GroupServiceImpl implements GroupService {
         team.setGoalDifference(team.getGoalDifference() - (goals - goalsAgainst));
     }
 
-    private Team findTeamByName(String teamName) throws GenericException {
+    private Team findTeamByName(String teamName) {
         return teamRepository.findByName(teamName).orElseThrow(() -> new GenericException("There is no team with name: " + teamName));
     }
 
-    private void saveGame(GameTO gameTO, Group group) throws GenericException {
+    private void saveGame(GameTO gameTO, Group group) {
         GamePK gamePK = new GamePK(findTeamId(gameTO.getHomeTeam()), findTeamId(gameTO.getAwayTeam()));
         Optional<Game> gameOptional = gameRepository.findById(gamePK);
         if (gameOptional.isPresent()) {
@@ -277,7 +277,7 @@ public class GroupServiceImpl implements GroupService {
         return teamRepository.findIdByName(teamName);
     }
 
-    private int splitScore(String score, int index) throws GenericException {
+    private int splitScore(String score, int index) {
         if (StringUtils.isEmpty(score)) {
             throw new GenericException("Score field must not be empty or null");
         }

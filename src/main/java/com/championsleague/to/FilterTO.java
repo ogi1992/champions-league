@@ -39,4 +39,20 @@ public class FilterTO implements Serializable {
     public String getTeam() {
         return team;
     }
+
+    public void setFrom(Date from) {
+        this.from = from;
+    }
+
+    public void setTo(Date to) {
+        this.to = to;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
 }
