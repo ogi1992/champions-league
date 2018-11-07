@@ -25,13 +25,17 @@ public class GameSpecificationBuilder {
             return null;
         }
 
-        List<Specification> specs = params.stream()
+        List<GameSpecification> specs = params.stream()
                 .map(GameSpecification::new)
                 .collect(Collectors.toList());
 
         Specification result = specs.get(0);
 
         for (int i = 1; i < params.size(); i++) {
+            if (specs.get(i).getCriteria().getKey().equals("awayTeam")) {
+                result = Specification.where(result).or(specs.get(i));
+                continue;
+            }
             result = Specification.where(result).and(specs.get(i));
         }
         return result;

@@ -2,6 +2,7 @@ package com.championsleague.entities.specification;
 
 import com.championsleague.entities.Game;
 import com.championsleague.entities.Group;
+import com.championsleague.entities.Team;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -15,6 +16,14 @@ public class GameSpecification implements Specification<Game> {
 
     private SearchCriteria criteria;
 
+    public SearchCriteria getCriteria() {
+        return criteria;
+    }
+
+    public void setCriteria(SearchCriteria criteria) {
+        this.criteria = criteria;
+    }
+
     public GameSpecification(SearchCriteria searchCriteria) {
         this.criteria = searchCriteria;
     }
@@ -23,6 +32,8 @@ public class GameSpecification implements Specification<Game> {
     public Predicate toPredicate(Root<Game> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
         if (criteria.getOperation().equalsIgnoreCase("equal")) {
             if (root.get(criteria.getKey()).getJavaType() == Group.class) {
+                return builder.equal(root.get(criteria.getKey()), criteria.getValue());
+            } else if (root.get(criteria.getKey()).getJavaType() == Team.class) {
                 return builder.equal(root.get(criteria.getKey()), criteria.getValue());
             }
         } else if (criteria.getOperation().equalsIgnoreCase("between")) {

@@ -1,6 +1,7 @@
 package com.championsleague.services.impl;
 
 import com.championsleague.entities.Game;
+import com.championsleague.entities.Team;
 import com.championsleague.entities.specification.GameSpecificationBuilder;
 import com.championsleague.exceptions.GenericException;
 import com.championsleague.repositories.GameRepository;
@@ -14,10 +15,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,6 +41,13 @@ public class GameServiceImpl implements GameService {
         }
         GameSpecificationBuilder builder = new GameSpecificationBuilder();
 
+        if (!StringUtils.isEmpty(filters.getTeam())) {
+            Optional<Team> team = teamRepository.findByName(filters.getTeam());
+            team.ifPresent(t -> {
+                builder.with("homeTeam", "equal", team);
+                builder.with("awayTeam", "equal", team);
+            });
+        }
         if (!StringUtils.isEmpty(filters.getGroup())) {
             builder.with("group", "equal", groupRepository.findByName(filters.getGroup()));
         }

@@ -6,10 +6,11 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TeamRepository extends CrudRepository<Team, Integer> {
 
-    Team findByName(String homeTeam);
+    Optional<Team> findByName(String homeTeam);
 
     @Query("SELECT t.id FROM Team t WHERE t.name = :name")
     Integer findIdByName(@Param("name") String name);

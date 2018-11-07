@@ -6,6 +6,7 @@ import com.championsleague.entities.Team;
 import com.championsleague.entities.pk.GamePK;
 import com.championsleague.enums.GameOutcome;
 import com.championsleague.enums.Points;
+import com.championsleague.exceptions.GameAlreadyExistsException;
 import com.championsleague.exceptions.GenericException;
 import com.championsleague.repositories.GameRepository;
 import com.championsleague.repositories.GroupRepository;
@@ -20,10 +21,13 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
 public class GroupServiceImpl implements GroupService {
+
+    private final Logger logger = Logger.getLogger(GroupServiceImpl.class.getName());
 
     private GroupRepository groupRepository;
 
@@ -63,7 +67,12 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupTO> addResults(List<GameTO> results) throws GenericException {
         for (GameTO gameTO : results) {
             Group group = checkGroup(gameTO);
-            saveTeamStats(gameTO, group);
+            try {
+                saveTeamStats(gameTO, group);
+            } catch (GameAlreadyExistsException ex) {
+                logger.info(ex.getMessage());
+                continue;
+            }
             saveGame(gameTO, group);
         }
 
@@ -197,7 +206,7 @@ public class GroupServiceImpl implements GroupService {
         GamePK gamePK = new GamePK(findTeamId(gameTO.getHomeTeam()), findTeamId(gameTO.getAwayTeam()));
         Optional<Game> gameOptional = gameRepository.findById(gamePK);
         if (gameOptional.isPresent()) {
-            throw new GenericException("Game between: " + gameTO.getHomeTeam() + " and " + gameTO.getAwayTeam() + " already exists. Can't add new one");
+            throw new GameAlreadyExistsException("Game between: " + gameTO.getHomeTeam() + " and " + gameTO.getAwayTeam() + " already exists. Can't add new one");
         }
         int homeGoals = splitScore(gameTO.getScore(), 0);
         int awayGoals = splitScore(gameTO.getScore(), 1);
@@ -249,8 +258,8 @@ public class GroupServiceImpl implements GroupService {
         team.setGoalDifference(team.getGoalDifference() - (goals - goalsAgainst));
     }
 
-    private Team findTeamByName(String teamName) {
-        return teamRepository.findByName(teamName);
+    private Team findTeamByName(String teamName) throws GenericException {
+        return teamRepository.findByName(teamName).orElseThrow(() -> new GenericException("There is no team with name: " + teamName));
     }
 
     private void saveGame(GameTO gameTO, Group group) throws GenericException {

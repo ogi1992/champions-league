@@ -23,6 +23,14 @@ public class Game {
     @Pattern(regexp = "[0-9]+:[0-9]+", message = "Please insert correct score")
     private String score;
 
+    @ManyToOne
+    @JoinColumn(name = "home_team_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Team homeTeam;
+
+    @ManyToOne
+    @JoinColumn(name = "away_team_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Team awayTeam;
+
     private Date kickoffAt;
 
     private int matchday;
@@ -88,5 +96,21 @@ public class Game {
 
     public void setLeagueTitle(String leagueTitle) {
         this.leagueTitle = leagueTitle;
+    }
+
+    public Team getHomeTeam() {
+        return homeTeam;
+    }
+
+    public void setHomeTeam(Team homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+
+    public Team getAwayTeam() {
+        return awayTeam;
+    }
+
+    public void setAwayTeam(Team awayTeam) {
+        this.awayTeam = awayTeam;
     }
 }
