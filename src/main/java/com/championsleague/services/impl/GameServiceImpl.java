@@ -44,8 +44,8 @@ public class GameServiceImpl implements GameService {
         if (!StringUtils.isEmpty(filters.getTeam())) {
             Optional<Team> team = teamRepository.findByName(filters.getTeam());
             team.ifPresent(t -> {
-                builder.with("homeTeam", "equal", team);
-                builder.with("awayTeam", "equal", team);
+                builder.with("homeTeam", "equal", team.get());
+                builder.with("awayTeam", "equal", team.get());
             });
         }
         if (!StringUtils.isEmpty(filters.getGroup())) {

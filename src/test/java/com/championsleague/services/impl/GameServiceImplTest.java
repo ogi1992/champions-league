@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,17 +79,41 @@ public class GameServiceImplTest {
         games.add(homeArsenal);
         games.add(homePSG);
 
-        when(teamRepository.findByName(anyString())).thenReturn(Optional.of(teamArsenal));
         when(groupRepository.findByName(anyString())).thenReturn(group);
-        when(gameRepository.findAll(any(GameSpecification.class))).thenReturn(games);
+        when(gameRepository.findAll(any(Specification.class))).thenReturn(games);
         when(teamRepository.findNameById(teamArsenal.getId())).thenReturn(teamArsenal.getName());
         when(teamRepository.findNameById(teamPSG.getId())).thenReturn(teamPSG.getName());
+        when(teamRepository.findByName(anyString())).thenReturn(Optional.of(teamArsenal));
     }
 
     @Test
     public void filterResults_filterByDate() throws GenericException {
         filters.setFrom(new Date());
         filters.setTo(new Date());
+        List<GameTO> gameTOS = gameService.filterResults(filters);
+        assertEquals(2, gameTOS.size());
+    }
+
+    @Test
+    public void filterResults_filterByGroup() throws GenericException {
+        filters.setGroup("A");
+        List<GameTO> gameTOS = gameService.filterResults(filters);
+        assertEquals(2, gameTOS.size());
+    }
+
+    @Test
+    public void filterResults_filterByTeam() throws GenericException {
+        filters.setTeam("Arsenal");
+        List<GameTO> gameTOS = gameService.filterResults(filters);
+        assertEquals(2, gameTOS.size());
+    }
+
+    @Test
+    public void filterResults_filterByDateTeamAndGroup() throws GenericException {
+        filters.setFrom(new Date());
+        filters.setTo(new Date());
+        filters.setGroup("A");
+        filters.setTeam("Arsenal");
         List<GameTO> gameTOS = gameService.filterResults(filters);
         assertEquals(2, gameTOS.size());
     }
